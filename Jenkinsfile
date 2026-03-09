@@ -2,22 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+
+        stage('Checkout Code') {
             steps {
-                echo 'Building project...'
+                git 'https://github.com/Adept010/jenkins-test-project.git'
             }
         }
 
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Testing project...'
+                sh 'docker build -t faizan-nginx .'
             }
         }
 
-        stage('Deploy') {
+        stage('Run Container') {
             steps {
-                echo 'Deploying project...'
+                sh 'docker run -d -p 8082:80 faizan-nginx'
             }
         }
+
     }
 }
